@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+    {% block title%}
+    	<title>To-do List</title>
+    {% endblock title %}
+
+
+    {% block content%}
+    <br>
+    <form method="POST">
+    {% csrf_token %}
+	  <div class="form-group">
+	    <input type="text" class="form-control" name="task" placeholder="Add task?">
+	  </div>
+	  <button type="submit" class="btn btn-primary">Add Task</button>
+	</form>
+    <br>
+    	<table class="table table-bordered text-center">
+		  <thead class="thead-dark">
+		    <tr>
+		      <th scope="col">Task</th>
+		      <th scope="col">Task state</th>
+		      <th scope="col">Edit</th>
+		      <th scope="col">Delete</th>
+		    </tr>
+		  </thead>
+		  <tbody class="content_holder" >
+    	{% for obj in all_task %}
+    		{% if obj.done %}
+				<tr class="table-success">
+				    <th scope="row">{{ obj.task }}</th>
+				    <td><a href="{% url 'pending_task' obj.id %}">Mark as pending</a></td>
+				    <td><a href="{% url 'edit_task' obj.id %}"><button type="button" class="btn btn-warning">Edit</button></a></td>
+				    <td><a href="{% url 'delete_task' obj.id %}"><button type="button" class="btn btn-danger">Delete</button></a></td>
+				</tr>
+    		{% else %}
+    			<tr>
+				    <th scope="row">{{ obj.task }}</th>
+				    <td><a href="{% url 'completed_task' obj.id %}">Mark as Completed</a></td>
+				    <td><a href="{% url 'edit_task' obj.id %}"><button type="button" class="btn btn-warning">Edit</button></a></td>
+				    <td><a href="{% url 'delete_task' obj.id %}"> <button type="button" class="btn btn-danger">Delete</button></a></td>
+				</tr>
+    		{% endif %}
+    	{% endfor %}
+    		</tbody>
+    	</table>
+    {% endblock content %}
